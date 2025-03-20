@@ -22,6 +22,8 @@ ghosts = [
     [vector(100, 160), vector(0, -35)],
     [vector(100, -160), vector(-35, 0)],
 ]
+directions = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)] 
+
 # fmt: off
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -140,6 +142,20 @@ def move():
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
+            best_option = None  
+            best_distance = float('inf') 
+
+            for option in directions:  
+                new_pos = point + option  
+                distance = abs(new_pos.x - pacman.x) + abs(new_pos.y - pacman.y) 
+
+                if valid(new_pos) and distance < best_distance: 
+                    best_option = option  
+                    best_distance = distance  
+
+            if best_option:  
+                course.x = best_option.x  
+                course.y = best_option.y 
 
         up()
         goto(point.x + 10, point.y + 10)
